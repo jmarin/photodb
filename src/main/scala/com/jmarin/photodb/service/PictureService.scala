@@ -2,7 +2,7 @@ package com.jmarin.photodb.service
 
 import java.util.UUID
 
-import cats.Monad
+import cats.{Functor, Monad}
 import cats.syntax.all._
 import com.jmarin.photodb.model.Picture
 import com.jmarin.photodb.repositories.algebras.PictureRepository
@@ -10,7 +10,7 @@ import com.jmarin.photodb.repositories.algebras.PictureRepository
 sealed trait PictureError
 case class PictureAlreadyExists(id: UUID) extends PictureError
 
-class PictureService[F[_]: Monad](repository: PictureRepository[F]) {
+class PictureService[F[_]: Monad, G[_]: Functor](repository: PictureRepository[F, G]) {
 
   def create(picture: Picture): F[Either[PictureError, Picture]] =
     get(picture.id).flatMap {
@@ -25,9 +25,11 @@ class PictureService[F[_]: Monad](repository: PictureRepository[F]) {
 
   def remove(pictureId: UUID): F[Option[Picture]] = repository.delete(pictureId)
 
+  def findAll(): G[Picture] = repository.findAll()
+
 }
 
 object PictureService {
-  def apply[F[_]: Monad](pictureRepository: PictureRepository[F]) =
-    new PictureService[F](pictureRepository)
+  def apply[F[_]: Monad, G[_]: Functor](pictureRepository: PictureRepository[F, G]) =
+    new PictureService[F, G](pictureRepository)
 }

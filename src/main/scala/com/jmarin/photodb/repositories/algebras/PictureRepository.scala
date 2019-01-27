@@ -4,8 +4,9 @@ import java.util.UUID
 
 import com.jmarin.photodb.model.Picture
 
-trait PictureRepository[F[_]] {
+trait PictureRepository[F[_], G[_]] {
   def create(picture: Picture): F[Picture]
   def get(id: UUID): F[Option[Picture]]
   def delete(id: UUID): F[Option[Picture]]
+  def findAll(): G[Picture]
 }

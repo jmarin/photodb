@@ -7,7 +7,7 @@ import cats.syntax.option._
 import com.jmarin.photodb.model.Picture
 import com.jmarin.photodb.repositories.algebras.PictureRepository
 
-class InMemoryPictureRepository extends PictureRepository[Id] {
+class InMemoryPictureRepository extends PictureRepository[Id, List] {
 
   var pictures = Map.empty[UUID, Picture]
 
@@ -16,9 +16,7 @@ class InMemoryPictureRepository extends PictureRepository[Id] {
     picture
   }
 
-  override def get(id: UUID): Id[Option[Picture]] = {
-    pictures.get(id)
-  }
+  override def get(id: UUID): Id[Option[Picture]] = pictures.get(id)
 
   override def delete(id: UUID): Id[Option[Picture]] = {
     pictures.get(id).fold[Option[Picture]](ifEmpty = None) { existingPicture =>
@@ -26,6 +24,8 @@ class InMemoryPictureRepository extends PictureRepository[Id] {
       existingPicture.some
     }
   }
+
+  override def findAll(): List[Picture] = pictures.values.toList
 
 }
 
