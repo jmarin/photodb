@@ -34,12 +34,14 @@ class PictureServiceSpec extends WordSpec with Matchers {
                      PictureMetadata(immutable.Seq(Keyword("events"))))
 
   "Picture Service" should {
-    "add picture" in {
+    "create picture" in {
       pictureService.get(pic1.id) shouldEqual None
       pictureService.create(pic1) shouldEqual Right(pic1)
       pictureService.create(pic2) shouldEqual Right(pic2)
       pictureService.create(pic3) shouldEqual Right(pic3)
-
+    }
+    "return error when creating an image that already exists" in {
+      pictureService.create(pic3) shouldEqual Left(PictureAlreadyExists(pic3.id))
     }
     "get picture" in {
       pictureService.get(pic1.id) shouldEqual Some(pic1)
@@ -60,6 +62,8 @@ class PictureServiceSpec extends WordSpec with Matchers {
       portraitPictures.size should equal(1)
       val allPictures = pictureService.findByKeywords(Set(Keyword("travel"), Keyword("events")))
       allPictures.size should equal(3)
+      val noFilter = pictureService.findByKeywords(Set.empty)
+      noFilter.size should equal(3)
     }
     "delete picture" in {
       pictureService.remove(pic1.id) shouldEqual Some(pic1)
