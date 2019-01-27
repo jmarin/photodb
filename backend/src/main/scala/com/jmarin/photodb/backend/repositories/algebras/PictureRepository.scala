@@ -1,8 +1,7 @@
-package com.jmarin.photodb.repositories.algebras
-
+package com.jmarin.photodb.backend.repositories.algebras
 import java.util.UUID
 
-import com.jmarin.photodb.model.{Keyword, Picture}
+import com.jmarin.photodb.backend.model.{Keyword, Picture}
 
 trait PictureRepository[F[_], G[_]] {
   def create(picture: Picture): F[Picture]

@@ -1,5 +1,4 @@
-package com.jmarin.photodb.model
-
+package com.jmarin.photodb.backend.model
 import java.nio.file.Path
 import java.util.UUID
 

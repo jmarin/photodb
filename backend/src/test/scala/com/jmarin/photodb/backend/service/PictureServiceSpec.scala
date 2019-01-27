@@ -1,12 +1,14 @@
-package com.jmarin.photodb.service
+package com.jmarin.photodb.backend.service
+
+
 
 import java.nio.file.Paths
 import java.util.UUID
 
 import cats.{Functor, Id}
-import com.jmarin.photodb.model.{Keyword, Picture, PictureMetadata}
-import com.jmarin.photodb.repositories.algebras.PictureRepository
-import com.jmarin.photodb.repositories.interpreters.inmemory.InMemoryPictureRepository
+import com.jmarin.photodb.backend.model.{Keyword, Picture, PictureMetadata}
+import com.jmarin.photodb.backend.repositories.algebras.PictureRepository
+import com.jmarin.photodb.backend.repositories.interpreters.inmemory.InMemoryPictureRepository
 import org.scalatest.{Matchers, WordSpec}
 
 import scala.collection.immutable

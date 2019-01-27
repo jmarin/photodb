@@ -1,12 +1,11 @@
-package com.jmarin.photodb.service
+package com.jmarin.photodb.backend.service
 
 import java.util.UUID
 
 import cats.{Functor, Monad}
 import cats.syntax.all._
-import com.jmarin.photodb.model.{Keyword, Picture}
-import com.jmarin.photodb.repositories.algebras.PictureRepository
-
+import com.jmarin.photodb.backend.model.{Keyword, Picture}
+import com.jmarin.photodb.backend.repositories.algebras.PictureRepository
 sealed trait PictureError
 case class PictureAlreadyExists(id: UUID) extends PictureError
 

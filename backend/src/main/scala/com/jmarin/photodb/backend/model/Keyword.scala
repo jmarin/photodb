@@ -1,3 +1,3 @@
-package com.jmarin.photodb.model
+package com.jmarin.photodb.backend.model
 
 case class Keyword(value: String) extends AnyVal

@@ -1,11 +1,11 @@
-package com.jmarin.photodb.repositories.interpreters.inmemory
+package com.jmarin.photodb.backend.repositories.interpreters.inmemory
 
 import java.util.UUID
 
 import cats.Id
 import cats.syntax.option._
-import com.jmarin.photodb.model.{Keyword, Picture}
-import com.jmarin.photodb.repositories.algebras.PictureRepository
+import com.jmarin.photodb.backend.model.{Keyword, Picture}
+import com.jmarin.photodb.backend.repositories.algebras.PictureRepository
 
 class InMemoryPictureRepository extends PictureRepository[Id, List] {
 
