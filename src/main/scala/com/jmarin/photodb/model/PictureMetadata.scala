@@ -1,3 +1,5 @@
 package com.jmarin.photodb.model
 
-case class PictureMetadata()
+import com.jmarin.photodb._
+
+case class PictureMetadata(keywords: Seq[Keyword])

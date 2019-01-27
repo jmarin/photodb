@@ -1,5 +1,33 @@
 package com.jmarin.photodb.service
 
-trait PictureService[F[_]] {
+import java.util.UUID
 
+import cats.Monad
+import cats.syntax.all._
+import com.jmarin.photodb.model.Picture
+import com.jmarin.photodb.repositories.algebras.PictureRepository
+
+sealed trait PictureError
+case class PictureAlreadyExists(id: UUID) extends PictureError
+
+class PictureService[F[_]: Monad](repository: PictureRepository[F]) {
+
+  def create(picture: Picture): F[Either[PictureError, Picture]] =
+    get(picture.id).flatMap {
+      case None =>
+        repository.create(picture).map(_.asRight)
+
+      case Some(existingPicture) =>
+        Monad[F].pure(PictureAlreadyExists(existingPicture.id)).map(_.asLeft)
+    }
+
+  def get(pictureId: UUID): F[Option[Picture]] = repository.get(pictureId)
+
+  def remove(pictureId: UUID): F[Option[Picture]] = repository.delete(pictureId)
+
+}
+
+object PictureService {
+  def apply[F[_]: Monad](pictureRepository: PictureRepository[F]) =
+    new PictureService[F](pictureRepository)
 }
