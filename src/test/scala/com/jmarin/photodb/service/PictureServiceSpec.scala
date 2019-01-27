@@ -29,27 +29,45 @@ class PictureServiceSpec extends WordSpec with Matchers {
                      Paths.get("").toAbsolutePath,
                      PictureMetadata(immutable.Seq(Keyword("travel"))))
 
+  val pic3 = Picture(UUID.randomUUID(),
+                     Paths.get("").toAbsolutePath,
+                     PictureMetadata(immutable.Seq(Keyword("events"))))
+
   "Picture Service" should {
     "add picture" in {
       pictureService.get(pic1.id) shouldEqual None
       pictureService.create(pic1) shouldEqual Right(pic1)
       pictureService.create(pic2) shouldEqual Right(pic2)
+      pictureService.create(pic3) shouldEqual Right(pic3)
+
     }
     "get picture" in {
       pictureService.get(pic1.id) shouldEqual Some(pic1)
       pictureService.get(pic2.id) shouldEqual Some(pic2)
+      pictureService.get(pic3.id) shouldEqual Some(pic3)
     }
     "find all pictures" in {
       val allPictures = pictureService.findAll()
       allPictures should contain(pic1)
       allPictures should contain(pic2)
-      allPictures.size should equal(2)
+      allPictures should contain(pic3)
+      allPictures.size should equal(3)
+    }
+    "find pictures by keyword" in {
+      val travelPictures = pictureService.findByKeywords(Set(Keyword("travel")))
+      travelPictures.size should equal(2)
+      val portraitPictures = pictureService.findByKeywords(Set(Keyword("portrait")))
+      portraitPictures.size should equal(1)
+      val allPictures = pictureService.findByKeywords(Set(Keyword("travel"), Keyword("events")))
+      allPictures.size should equal(3)
     }
     "delete picture" in {
       pictureService.remove(pic1.id) shouldEqual Some(pic1)
       pictureService.get(pic1.id) shouldEqual None
       pictureService.remove(pic2.id) shouldEqual Some(pic2)
       pictureService.get(pic2.id) shouldEqual None
+      pictureService.remove(pic3.id) shouldEqual Some(pic3)
+      pictureService.get(pic3.id) shouldEqual None
       pictureService.findAll().size should equal(0)
     }
 

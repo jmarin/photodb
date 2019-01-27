@@ -4,7 +4,7 @@ import java.util.UUID
 
 import cats.Id
 import cats.syntax.option._
-import com.jmarin.photodb.model.Picture
+import com.jmarin.photodb.model.{Keyword, Picture}
 import com.jmarin.photodb.repositories.algebras.PictureRepository
 
 class InMemoryPictureRepository extends PictureRepository[Id, List] {
@@ -26,6 +26,20 @@ class InMemoryPictureRepository extends PictureRepository[Id, List] {
   }
 
   override def findAll(): List[Picture] = pictures.values.toList
+
+  override def findByKeywords(keywords: Set[Keyword]): List[Picture] = {
+    if (keywords.isEmpty) {
+      findAll()
+    } else {
+      findAll().filter(
+        p =>
+          p.metadata.keywords
+            .map(_.value.toLowerCase)
+            .toSet
+            .intersect(keywords.map(_.value.toLowerCase))
+            .nonEmpty)
+    }
+  }
 
 }
 

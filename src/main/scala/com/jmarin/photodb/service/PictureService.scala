@@ -4,7 +4,7 @@ import java.util.UUID
 
 import cats.{Functor, Monad}
 import cats.syntax.all._
-import com.jmarin.photodb.model.Picture
+import com.jmarin.photodb.model.{Keyword, Picture}
 import com.jmarin.photodb.repositories.algebras.PictureRepository
 
 sealed trait PictureError
@@ -26,6 +26,8 @@ class PictureService[F[_]: Monad, G[_]: Functor](repository: PictureRepository[F
   def remove(pictureId: UUID): F[Option[Picture]] = repository.delete(pictureId)
 
   def findAll(): G[Picture] = repository.findAll()
+
+  def findByKeywords(keywords: Set[Keyword]): G[Picture] = repository.findByKeywords(keywords)
 
 }
 
