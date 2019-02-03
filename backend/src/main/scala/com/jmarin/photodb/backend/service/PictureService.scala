@@ -6,6 +6,7 @@ import cats.{Functor, Monad}
 import cats.syntax.all._
 import com.jmarin.photodb.backend.model.{Keyword, Picture}
 import com.jmarin.photodb.backend.repositories.algebras.PictureRepository
+
 sealed trait PictureError
 case class PictureAlreadyExists(id: UUID) extends PictureError
 
