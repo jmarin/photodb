@@ -17,6 +17,11 @@ lazy val photodb = (project in file("."))
 lazy val frontend = (project in file("frontend"))
   .enablePlugins(PlayScala)
   .settings(commonSettings: _*)
+  .settings(
+    Seq(
+      libraryDependencies ++= commonDeps ++ Seq(guice)
+    )
+  )
   .dependsOn(backend)
 
 lazy val backend = (project in file("backend"))
