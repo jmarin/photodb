@@ -5,23 +5,26 @@ package com.jmarin.photodb.backend.service
 import java.nio.file.Paths
 import java.util.UUID
 
-import cats.{Functor, Id}
+import akka.actor.ActorSystem
+import akka.stream.ActorMaterializer
+import akka.stream.scaladsl.Sink
+import cats.Id
 import com.jmarin.photodb.backend.model.{Keyword, Picture, PictureMetadata}
 import com.jmarin.photodb.backend.repositories.algebras.PictureRepository
 import com.jmarin.photodb.backend.repositories.interpreters.inmemory.InMemoryPictureRepository
 import org.scalatest.{Matchers, WordSpec}
 
 import scala.collection.immutable
+import scala.concurrent.ExecutionContext
 
 class PictureServiceSpec extends WordSpec with Matchers {
 
-  // Provide a Functor[List] instance
-  implicit val listFunctor: Functor[List] = new Functor[List] {
-    override def map[A, B](fa: List[A])(f: A => B): List[B] = fa map f
-  }
+  val pictureRepository: PictureRepository[Id] = InMemoryPictureRepository
+  val pictureService: PictureService[Id]       = PictureService(pictureRepository)
 
-  val pictureRepository: PictureRepository[Id, List] = InMemoryPictureRepository
-  val pictureService: PictureService[Id, List]       = PictureService(pictureRepository)
+  implicit val system: ActorSystem = ActorSystem()
+  implicit val materializer: ActorMaterializer = ActorMaterializer()
+  implicit val ec: ExecutionContext = system.dispatcher
 
   val pic1 = Picture(UUID.randomUUID(),
                      Paths.get("").toAbsolutePath,
@@ -52,20 +55,20 @@ class PictureServiceSpec extends WordSpec with Matchers {
     }
     "find all pictures" in {
       val allPictures = pictureService.findAll()
-      allPictures should contain(pic1)
-      allPictures should contain(pic2)
-      allPictures should contain(pic3)
-      allPictures.size should equal(3)
+      allPictures.runWith(Sink.seq).map(seq => seq should contain(pic1))
+      allPictures.runWith(Sink.seq).map(seq => seq should contain(pic2))
+      allPictures.runWith(Sink.seq).map(seq => seq should contain(pic3))
+      allPictures.runWith(Sink.seq).map(seq => seq.size should equal(3))
     }
     "find pictures by keyword" in {
       val travelPictures = pictureService.findByKeywords(Set(Keyword("travel")))
-      travelPictures.size should equal(2)
+      travelPictures.runWith(Sink.seq).map(seq => seq.size should equal(2))
       val portraitPictures = pictureService.findByKeywords(Set(Keyword("portrait")))
-      portraitPictures.size should equal(1)
+      portraitPictures.runWith(Sink.seq).map(seq => seq.size should equal(1))
       val allPictures = pictureService.findByKeywords(Set(Keyword("travel"), Keyword("events")))
-      allPictures.size should equal(3)
+      allPictures.runWith(Sink.seq).map(seq => seq.size should equal(3))
       val noFilter = pictureService.findByKeywords(Set.empty)
-      noFilter.size should equal(3)
+      noFilter.runWith(Sink.seq).map(seq => seq.size should equal(3))
     }
     "delete picture" in {
       pictureService.remove(pic1.id) shouldEqual Some(pic1)
@@ -74,7 +77,7 @@ class PictureServiceSpec extends WordSpec with Matchers {
       pictureService.get(pic2.id) shouldEqual None
       pictureService.remove(pic3.id) shouldEqual Some(pic3)
       pictureService.get(pic3.id) shouldEqual None
-      pictureService.findAll().size should equal(0)
+      pictureService.findAll().runWith(Sink.seq).map(seq => seq.size should equal(0))
     }
 
   }

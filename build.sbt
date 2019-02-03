@@ -6,6 +6,7 @@ lazy val testDeps = Seq(scalatest, scalacheck)
 
 lazy val commonDeps = testDeps
 lazy val catsDeps = Seq(cats)
+lazy val akka = Seq(akkaStream)
 
 lazy val photodb = (project in file("."))
   .settings(commonSettings: _*)
@@ -27,7 +28,7 @@ lazy val frontend = (project in file("frontend"))
 lazy val backend = (project in file("backend"))
   .settings(commonSettings: _*)
   .settings(
-    libraryDependencies ++= commonDeps ++ catsDeps
+    libraryDependencies ++= commonDeps ++ catsDeps ++ akka
   )
 
 

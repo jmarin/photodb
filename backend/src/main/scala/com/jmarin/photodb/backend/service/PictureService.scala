@@ -2,7 +2,9 @@ package com.jmarin.photodb.backend.service
 
 import java.util.UUID
 
-import cats.{Functor, Monad}
+import akka.NotUsed
+import akka.stream.scaladsl.Source
+import cats.Monad
 import cats.syntax.all._
 import com.jmarin.photodb.backend.model.{Keyword, Picture}
 import com.jmarin.photodb.backend.repositories.algebras.PictureRepository
@@ -10,7 +12,7 @@ import com.jmarin.photodb.backend.repositories.algebras.PictureRepository
 sealed trait PictureError
 case class PictureAlreadyExists(id: UUID) extends PictureError
 
-class PictureService[F[_]: Monad, G[_]: Functor](repository: PictureRepository[F, G]) {
+class PictureService[F[_]: Monad](repository: PictureRepository[F]) {
 
   def create(picture: Picture): F[Either[PictureError, Picture]] =
     get(picture.id).flatMap {
@@ -25,13 +27,13 @@ class PictureService[F[_]: Monad, G[_]: Functor](repository: PictureRepository[F
 
   def remove(pictureId: UUID): F[Option[Picture]] = repository.delete(pictureId)
 
-  def findAll(): G[Picture] = repository.findAll()
+  def findAll(): Source[Picture, NotUsed] = repository.findAll()
 
-  def findByKeywords(keywords: Set[Keyword]): G[Picture] = repository.findByKeywords(keywords)
+  def findByKeywords(keywords: Set[Keyword]): Source[Picture, NotUsed] = repository.findByKeywords(keywords)
 
 }
 
 object PictureService {
-  def apply[F[_]: Monad, G[_]: Functor](pictureRepository: PictureRepository[F, G]) =
-    new PictureService[F, G](pictureRepository)
+  def apply[F[_]: Monad](pictureRepository: PictureRepository[F]) =
+    new PictureService[F](pictureRepository)
 }

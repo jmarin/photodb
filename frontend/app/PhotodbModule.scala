@@ -5,6 +5,6 @@ import com.jmarin.photodb.backend.repositories.interpreters.inmemory.InMemoryPic
 
 class PhotodbModule extends AbstractModule {
   override def configure(): Unit = {
-    bind(classOf[PictureRepository[Id, List]]).toInstance(InMemoryPictureRepository)
+    bind(classOf[PictureRepository[Id]]).toInstance(InMemoryPictureRepository)
   }
 }
