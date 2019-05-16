@@ -24,9 +24,11 @@ class PictureRepositoryInMemoryInterpreter[F[_]: Applicative] extends PictureRep
   override def delete(id: UUID): OptionT[F, Picture] =
     OptionT.fromOption(cache.remove(id))
 
-  override def findByKeywords(keywords: Set[Keyword],
-                              pageSize: Int,
-                              offset: Int): F[List[Picture]] = {
+  override def findByKeywords(
+      keywords: Set[Keyword],
+      pageSize: Int,
+      offset: Int
+  ): F[List[Picture]] = {
 
     val filtered: List[Picture] = cache.values
       .filter(
@@ -35,7 +37,8 @@ class PictureRepositoryInMemoryInterpreter[F[_]: Applicative] extends PictureRep
             .map(_.value.toLowerCase)
             .toSet
             .intersect(keywords.map(_.value.toLowerCase))
-            .nonEmpty)
+            .nonEmpty
+      )
       .toList
       .slice(offset, offset + pageSize)
 

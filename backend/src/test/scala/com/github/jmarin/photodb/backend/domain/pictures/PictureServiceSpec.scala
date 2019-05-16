@@ -16,17 +16,23 @@ class PictureServiceSpec extends WordSpec with Matchers {
   val pictureValidation = PictureValidationInterpreter.apply[Id](pictureRepository)
   val pictureService    = PictureService(pictureRepository, pictureValidation)
 
-  val pic1 = Picture(UUID.randomUUID(),
-                     Paths.get("").toAbsolutePath,
-                     PictureMetadata(immutable.Seq(Keyword("travel"), Keyword("portrait"))))
+  val pic1 = Picture(
+    UUID.randomUUID(),
+    Paths.get("").toAbsolutePath,
+    PictureMetadata(immutable.Seq(Keyword("travel"), Keyword("portrait")))
+  )
 
-  val pic2 = Picture(UUID.randomUUID(),
-                     Paths.get("").toAbsolutePath,
-                     PictureMetadata(immutable.Seq(Keyword("travel"))))
+  val pic2 = Picture(
+    UUID.randomUUID(),
+    Paths.get("").toAbsolutePath,
+    PictureMetadata(immutable.Seq(Keyword("travel")))
+  )
 
-  val pic3 = Picture(UUID.randomUUID(),
-                     Paths.get("").toAbsolutePath,
-                     PictureMetadata(immutable.Seq(Keyword("events"))))
+  val pic3 = Picture(
+    UUID.randomUUID(),
+    Paths.get("").toAbsolutePath,
+    PictureMetadata(immutable.Seq(Keyword("events")))
+  )
 
   "Picture Service" should {
     "create picture" in {

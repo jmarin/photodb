@@ -45,6 +45,7 @@ class PictureValidationInterpreter[F[_]: Monad](pictureRepository: PictureReposi
 
 object PictureValidationInterpreter {
   def apply[F[_]: Monad](
-      pictureRepository: PictureRepositoryAlgebra[F]): PictureValidationInterpreter[F] =
+      pictureRepository: PictureRepositoryAlgebra[F]
+  ): PictureValidationInterpreter[F] =
     new PictureValidationInterpreter[F](pictureRepository)
 }

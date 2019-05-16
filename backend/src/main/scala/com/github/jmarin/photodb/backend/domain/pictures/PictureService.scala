@@ -15,8 +15,10 @@ import com.github.jmarin.photodb.backend.domain.pictures.model.{
   PictureNotFoundError
 }
 
-class PictureService[F[_]: Monad](repository: PictureRepositoryAlgebra[F],
-                                  validation: PictureValidationAlgebra[F]) {
+class PictureService[F[_]: Monad](
+    repository: PictureRepositoryAlgebra[F],
+    validation: PictureValidationAlgebra[F]
+) {
 
   def createPicture(picture: Picture): EitherT[F, PictureAlreadyExistsError, Picture] =
     for {
@@ -36,7 +38,9 @@ class PictureService[F[_]: Monad](repository: PictureRepositoryAlgebra[F],
 }
 
 object PictureService {
-  def apply[F[_]: Monad](repository: PictureRepositoryAlgebra[F],
-                         validation: PictureValidationAlgebra[F]) =
+  def apply[F[_]: Monad](
+      repository: PictureRepositoryAlgebra[F],
+      validation: PictureValidationAlgebra[F]
+  ) =
     new PictureService[F](repository, validation)
 }
