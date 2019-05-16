@@ -13,7 +13,10 @@ class PictureRepositoryInMemoryInterpreter[F[_]: Applicative] extends PictureRep
 
   private val cache = new TrieMap[UUID, Picture]
 
-  override def create(picture: Picture): F[Picture] = ???
+  override def create(picture: Picture): F[Picture] = {
+    cache += (picture.id -> picture)
+    picture.pure[F]
+  }
 
   override def get(id: UUID): OptionT[F, Picture] =
     OptionT.fromOption(cache.get(id))

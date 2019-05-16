@@ -3,8 +3,7 @@ package com.github.jmarin.photodb.backend.domain.pictures
 import java.util.UUID
 
 import cats.Monad
-import cats.syntax.all._
-import cats.data.EitherT
+import cats.data.{EitherT, OptionT}
 import com.github.jmarin.photodb.backend.domain.pictures.algebras.{
   PictureRepositoryAlgebra,
   PictureValidationAlgebra
@@ -28,8 +27,8 @@ class PictureService[F[_]: Monad](repository: PictureRepositoryAlgebra[F],
   def getPicture(pictureId: UUID): EitherT[F, PictureNotFoundError.type, Picture] =
     repository.get(pictureId).toRight(PictureNotFoundError)
 
-  def deletePicture(pictureId: UUID): F[Unit] =
-    repository.delete(pictureId).value.void
+  def deletePicture(pictureId: UUID): OptionT[F, UUID] =
+    repository.delete(pictureId).map(p => p.id)
 
   def findPictureByKeywords(keywords: Set[Keyword], pageSize: Int, offset: Int): F[List[Picture]] =
     repository.findByKeywords(keywords, pageSize, offset)
