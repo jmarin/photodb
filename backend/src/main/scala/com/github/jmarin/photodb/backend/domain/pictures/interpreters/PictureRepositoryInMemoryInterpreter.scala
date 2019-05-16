@@ -41,3 +41,8 @@ class PictureRepositoryInMemoryInterpreter[F[_]: Applicative] extends PictureRep
   }
 
 }
+
+object PictureRepositoryInMemoryInterpreter {
+  def apply[F[_]: Applicative] =
+    new PictureRepositoryInMemoryInterpreter[F]
+}
