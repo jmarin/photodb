@@ -1,6 +1,5 @@
 package com.github.jmarin.photodb.backend.domain.pictures
 
-import java.nio.file.Paths
 import java.util.UUID
 
 import cats.Id
@@ -18,19 +17,19 @@ class PictureServiceSpec extends WordSpec with Matchers {
 
   val pic1 = Picture(
     UUID.randomUUID(),
-    Paths.get("").toAbsolutePath,
+    "",
     PictureMetadata(immutable.Seq(Keyword("travel"), Keyword("portrait")))
   )
 
   val pic2 = Picture(
     UUID.randomUUID(),
-    Paths.get("").toAbsolutePath,
+    "",
     PictureMetadata(immutable.Seq(Keyword("travel")))
   )
 
   val pic3 = Picture(
     UUID.randomUUID(),
-    Paths.get("").toAbsolutePath,
+    "",
     PictureMetadata(immutable.Seq(Keyword("events")))
   )
 
@@ -61,11 +60,11 @@ class PictureServiceSpec extends WordSpec with Matchers {
     "update picture" in {
       val existing = pictureService.getPicture(pic1.id).value
       val updated =
-        existing.map(picture => picture.copy(path = Paths.get("/new/path").toAbsolutePath))
+        existing.map(picture => picture.copy(path = "/new/path"))
       pictureService
         .updatePicture(
           updated
-            .getOrElse(Picture(UUID.randomUUID(), Paths.get(""), PictureMetadata(Nil)))
+            .getOrElse(Picture(UUID.randomUUID(), "", PictureMetadata(Nil)))
         )
         .value shouldEqual updated
     }
