@@ -22,6 +22,7 @@ class PictureValidationInterpreterSpec
   property("exists: fails if image is not in repository") {
     forAll { picture: Picture =>
       pictureValidation.exists(picture.id.some).value shouldBe Left(PictureNotFoundError)
+      pictureValidation.exists(None).value shouldBe Left(PictureNotFoundError)
     }
   }
 
