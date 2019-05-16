@@ -58,6 +58,17 @@ class PictureServiceSpec extends WordSpec with Matchers {
       val noKeywords = pictureService.findPictureByKeywords(Set.empty, 10, 0)
       noKeywords.size should equal(0)
     }
+    "update picture" in {
+      val existing = pictureService.getPicture(pic1.id).value
+      val updated =
+        existing.map(picture => picture.copy(path = Paths.get("/new/path").toAbsolutePath))
+      pictureService
+        .updatePicture(
+          updated
+            .getOrElse(Picture(UUID.randomUUID(), Paths.get(""), PictureMetadata(Nil)))
+        )
+        .value shouldEqual updated
+    }
     "delete picture" in {
       pictureService.deletePicture(pic1.id).value shouldEqual Some(pic1.id)
       pictureService.getPicture(pic1.id).value shouldEqual Left(PictureNotFoundError)
