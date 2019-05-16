@@ -18,6 +18,11 @@ class PictureRepositoryInMemoryInterpreter[F[_]: Applicative] extends PictureRep
     picture.pure[F]
   }
 
+  override def update(picture: Picture): OptionT[F, Picture] = OptionT {
+    cache.update(picture.id, picture)
+    picture.some.pure[F]
+  }
+
   override def get(id: UUID): OptionT[F, Picture] =
     OptionT.fromOption(cache.get(id))
 

@@ -4,6 +4,7 @@ import java.util.UUID
 
 import cats.Monad
 import cats.data.{EitherT, OptionT}
+import cats.implicits._
 import com.github.jmarin.photodb.backend.domain.pictures.algebras.{
   PictureRepositoryAlgebra,
   PictureValidationAlgebra
@@ -25,6 +26,12 @@ class PictureService[F[_]: Monad](
       _     <- validation.doesNotExist(picture)
       saved <- EitherT.liftF(repository.create(picture))
     } yield saved
+
+  def updatePicture(picture: Picture): EitherT[F, PictureNotFoundError.type, Picture] =
+    for {
+      _       <- validation.exists(picture.id.some)
+      updated <- EitherT.fromOptionF(repository.update(picture).value, PictureNotFoundError)
+    } yield updated
 
   def getPicture(pictureId: UUID): EitherT[F, PictureNotFoundError.type, Picture] =
     repository.get(pictureId).toRight(PictureNotFoundError)
