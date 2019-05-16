@@ -5,18 +5,11 @@ import java.util.UUID
 import cats.Monad
 import cats.syntax.all._
 import cats.data.EitherT
+import com.github.jmarin.photodb.backend.domain.pictures.algebras.{PictureRepositoryAlgebra, PictureValidationAlgebra}
+import com.github.jmarin.photodb.backend.domain.pictures.model.{Keyword, Picture, PictureAlreadyExistsError, PictureNotFoundError}
 
 class PictureService[F[_]: Monad](repository: PictureRepositoryAlgebra[F],
                                   validation: PictureValidationAlgebra[F]) {
-
-  //def createPicture(picture: Picture): EitherT[F, PictureError, Picture] = ???
-  // get(picture.id).flatMap {
-  //   case None =>
-  //     repository.create(picture).map(_.asRight)
-
-  //   case Some(existingPicture) =>
-  //     Monad[F].pure(PictureAlreadyExists(existingPicture.id)).map(_.asLeft)
-  // }
 
   def createPicture(picture: Picture): EitherT[F, PictureAlreadyExistsError, Picture] =
     for {

@@ -1,5 +1,7 @@
-package com.github.jmarin.photodb.backend.domain.pictures
+package com.github.jmarin.photodb.backend.domain.pictures.algebras
+
 import java.util.UUID
+import com.github.jmarin.photodb.backend.domain.pictures.model.{ Picture, Keyword }
 
 import cats.data.OptionT
 
