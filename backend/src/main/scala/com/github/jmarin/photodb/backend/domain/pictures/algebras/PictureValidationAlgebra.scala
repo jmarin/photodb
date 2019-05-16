@@ -3,7 +3,11 @@ package com.github.jmarin.photodb.backend.domain.pictures.algebras
 import cats.data.EitherT
 import java.util.UUID
 
-import com.github.jmarin.photodb.backend.domain.pictures.model.{Picture, PictureAlreadyExistsError, PictureNotFoundError}
+import com.github.jmarin.photodb.backend.domain.pictures.model.{
+  Picture,
+  PictureAlreadyExistsError,
+  PictureNotFoundError
+}
 
 trait PictureValidationAlgebra[F[_]] {
   /* Fails with PictureAlreadyExistsError */
