@@ -17,4 +17,10 @@ class ImageValidationInterpreter[F[_]: Monad](imageRepository: ImageRepositoryAl
       case None    => Right(())
     }
   }
+
+}
+
+object ImageValidationInterpreter {
+  def apply[F[_]: Monad](imageRepository: ImageRepositoryAlgebra[F]): ImageValidationAlgebra[F] =
+    new ImageValidationInterpreter[F](imageRepository)
 }

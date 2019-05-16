@@ -22,3 +22,8 @@ class ImageRepositoryInMemoryInterpreter[F[_]: Applicative] extends ImageReposit
     OptionT.fromOption(cache.remove(path))
 
 }
+
+object ImageRepositoryInMemoryInterpreter {
+  def apply[F[_]: Applicative]: ImageRepositoryInMemoryInterpreter[F] =
+    new ImageRepositoryInMemoryInterpreter[F]
+}
