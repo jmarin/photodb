@@ -1,5 +1,5 @@
 package com.github.jmarin.photodb.backend.domain.pictures.model
 
-import com.github.jmarin.photodb.Seq
+import java.util.UUID
 
-case class PictureMetadata(keywords: Seq[Keyword])
+case class PictureMetadata(id: UUID, path: String, keywords: Seq[Keyword])

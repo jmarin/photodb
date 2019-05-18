@@ -3,18 +3,12 @@ package com.github.jmarin.photodb.backend.domain.pictures.model
 import org.scalacheck._
 import java.util.UUID
 
-trait PictureArbitraries {
+trait PictureMetadataArbitraries {
 
   implicit def keyword: Arbitrary[Keyword] = Arbitrary {
     for {
       k <- Gen.alphaStr
     } yield Keyword(k)
-  }
-
-  implicit def metadata: Arbitrary[PictureMetadata] = Arbitrary {
-    for {
-      ks <- Gen.nonEmptyListOf(keyword.arbitrary)
-    } yield PictureMetadata(ks)
   }
 
   implicit def uuid: Arbitrary[UUID] = Arbitrary {
@@ -30,12 +24,12 @@ trait PictureArbitraries {
 
   }
 
-  implicit def picture: Arbitrary[Picture] = Arbitrary[Picture] {
+  implicit def picture: Arbitrary[PictureMetadata] = Arbitrary[PictureMetadata] {
     for {
       uuid     <- uuid.arbitrary
       path     <- path.arbitrary
-      metadata <- metadata.arbitrary
-    } yield Picture(uuid, path, metadata)
+      keywords <- Gen.listOf(keyword.arbitrary)
+    } yield PictureMetadata(uuid, path, keywords)
   }
 
 }

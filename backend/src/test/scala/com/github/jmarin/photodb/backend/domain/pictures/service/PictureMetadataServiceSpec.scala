@@ -5,44 +5,44 @@ import java.util.UUID
 import cats.Id
 import org.scalatest.{Matchers, WordSpec}
 import com.github.jmarin.photodb.backend.domain.pictures.model._
-import com.github.jmarin.photodb.backend.domain.pictures.interpreters.repositories.inmemory.PictureRepositoryInMemoryInterpreter
-import com.github.jmarin.photodb.backend.domain.pictures.interpreters.validation.PictureValidationInterpreter
+import com.github.jmarin.photodb.backend.domain.pictures.interpreters.repositories.inmemory.PictureMetadataRepositoryInMemoryInterpreter
+import com.github.jmarin.photodb.backend.domain.pictures.interpreters.validation.PictureMetadataValidationInterpreter
 
 import scala.collection.immutable
 
-class PictureServiceSpec extends WordSpec with Matchers {
+class PictureMetadataServiceSpec extends WordSpec with Matchers {
 
-  val pictureRepository = PictureRepositoryInMemoryInterpreter.apply[Id]
-  val pictureValidation = PictureValidationInterpreter.apply[Id](pictureRepository)
-  val pictureService    = PictureService(pictureRepository, pictureValidation)
+  val pictureRepository = PictureMetadataRepositoryInMemoryInterpreter.apply[Id]
+  val pictureValidation = PictureMetadataValidationInterpreter.apply[Id](pictureRepository)
+  val pictureService    = PictureMetadataService(pictureRepository, pictureValidation)
 
-  val pic1 = Picture(
+  val pic1 = PictureMetadata(
     UUID.randomUUID(),
     "",
-    PictureMetadata(immutable.Seq(Keyword("travel"), Keyword("portrait")))
+    immutable.Seq(Keyword("travel"), Keyword("portrait"))
   )
 
-  val pic2 = Picture(
+  val pic2 = PictureMetadata(
     UUID.randomUUID(),
     "",
-    PictureMetadata(immutable.Seq(Keyword("travel")))
+    immutable.Seq(Keyword("travel"))
   )
 
-  val pic3 = Picture(
+  val pic3 = PictureMetadata(
     UUID.randomUUID(),
     "",
-    PictureMetadata(immutable.Seq(Keyword("events")))
+    immutable.Seq(Keyword("events"))
   )
 
   "Picture Service" should {
     "create picture" in {
-      pictureService.getPicture(pic1.id).value shouldEqual Left(PictureNotFoundError)
+      pictureService.getPicture(pic1.id).value shouldEqual Left(PictureMetadataNotFoundError$)
       pictureService.createPicture(pic1).value shouldEqual Right(pic1)
       pictureService.createPicture(pic2).value shouldEqual Right(pic2)
       pictureService.createPicture(pic3).value shouldEqual Right(pic3)
     }
     "return error when creating an image that already exists" in {
-      pictureService.createPicture(pic3).value shouldEqual Left(PictureAlreadyExistsError(pic3.id))
+      pictureService.createPicture(pic3).value shouldEqual Left(PictureMetadataAlreadyExistsError(pic3.id))
     }
     "get picture" in {
       pictureService.getPicture(pic1.id).value shouldEqual Right(pic1)
@@ -65,17 +65,17 @@ class PictureServiceSpec extends WordSpec with Matchers {
       pictureService
         .updatePicture(
           updated
-            .getOrElse(Picture(UUID.randomUUID(), "", PictureMetadata(Nil)))
+            .getOrElse(PictureMetadata(UUID.randomUUID(), "", Nil))
         )
         .value shouldEqual updated
     }
     "delete picture" in {
       pictureService.deletePicture(pic1.id).value shouldEqual Some(pic1.id)
-      pictureService.getPicture(pic1.id).value shouldEqual Left(PictureNotFoundError)
+      pictureService.getPicture(pic1.id).value shouldEqual Left(PictureMetadataNotFoundError$)
       pictureService.deletePicture(pic2.id).value shouldEqual Some(pic2.id)
-      pictureService.getPicture(pic2.id).value shouldEqual Left(PictureNotFoundError)
+      pictureService.getPicture(pic2.id).value shouldEqual Left(PictureMetadataNotFoundError$)
       pictureService.deletePicture(pic3.id).value shouldEqual Some(pic3.id)
-      pictureService.getPicture(pic3.id).value shouldEqual Left(PictureNotFoundError)
+      pictureService.getPicture(pic3.id).value shouldEqual Left(PictureMetadataNotFoundError$)
     }
 
   }
