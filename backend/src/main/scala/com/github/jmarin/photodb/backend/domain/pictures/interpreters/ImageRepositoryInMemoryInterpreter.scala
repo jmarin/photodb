@@ -1,4 +1,5 @@
 package com.github.jmarin.backend.domain.pictures.interpreters
+
 import cats.Applicative
 import com.github.jmarin.photodb.backend.domain.pictures.algebras.ImageRepositoryAlgebra
 import java.awt.image.BufferedImage
