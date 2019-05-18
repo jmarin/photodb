@@ -1,4 +1,4 @@
-package com.github.jmarin.photodb.backend.domain.pictures.algebras
+package com.github.jmarin.photodb.backend.domain.pictures.algebras.repositories
 
 import cats.data.OptionT
 

@@ -1,19 +1,13 @@
-package com.github.jmarin.photodb.backend.domain.pictures.interpreters
+package com.github.jmarin.photodb.backend.domain.pictures.interpreters.validation
 
-import cats.data.EitherT
 import java.util.UUID
 
 import cats.Monad
+import cats.data.EitherT
 import cats.implicits._
-import com.github.jmarin.photodb.backend.domain.pictures.algebras.{
-  PictureRepositoryAlgebra,
-  PictureValidationAlgebra
-}
-import com.github.jmarin.photodb.backend.domain.pictures.model.{
-  Picture,
-  PictureAlreadyExistsError,
-  PictureNotFoundError
-}
+import com.github.jmarin.photodb.backend.domain.pictures.algebras.repositories.PictureRepositoryAlgebra
+import com.github.jmarin.photodb.backend.domain.pictures.algebras.validation.PictureValidationAlgebra
+import com.github.jmarin.photodb.backend.domain.pictures.model.{Picture, PictureAlreadyExistsError, PictureNotFoundError}
 
 class PictureValidationInterpreter[F[_]: Monad](pictureRepository: PictureRepositoryAlgebra[F])
     extends PictureValidationAlgebra[F] {

@@ -1,8 +1,8 @@
 package com.github.jmarin.photodb.backend.domain.pictures.service
-import com.github.jmarin.photodb.backend.domain.pictures.algebras.ImageRepositoryAlgebra
-import com.github.jmarin.photodb.backend.domain.pictures.algebras.ImageValidationAlgebra
 import cats.Monad
 import cats.data.{EitherT, OptionT}
+import com.github.jmarin.photodb.backend.domain.pictures.algebras.repositories.ImageRepositoryAlgebra
+import com.github.jmarin.photodb.backend.domain.pictures.algebras.validation.ImageValidationAlgebra
 import com.github.jmarin.photodb.backend.domain.pictures.model.ImageAlreadyExistsError
 import com.github.jmarin.photodb.backend.domain.pictures.model.ImageNotFoundError
 

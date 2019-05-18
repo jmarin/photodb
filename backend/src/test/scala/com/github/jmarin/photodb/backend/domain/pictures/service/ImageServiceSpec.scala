@@ -2,13 +2,15 @@ package com.github.jmarin.photodb.backend.domain.pictures.service
 
 import cats.Id
 import org.scalatest.{Matchers, WordSpec}
-import com.github.jmarin.photodb.backend.domain.pictures.algebras.ImageRepositoryAlgebra
-import com.github.jmarin.backend.domain.pictures.interpreters.ImageRepositoryInMemoryInterpreter
-import com.github.jmarin.photodb.backend.domain.pictures.algebras.ImageValidationAlgebra
-import com.github.jmarin.photodb.backend.domain.pictures.interpreters.ImageValidationInterpreter
 import java.awt.image.BufferedImage
+
 import com.github.jmarin.photodb.backend.domain.pictures.model.ImageNotFoundError
 import java.io.ByteArrayOutputStream
+
+import com.github.jmarin.photodb.backend.domain.pictures.algebras.repositories.ImageRepositoryAlgebra
+import com.github.jmarin.photodb.backend.domain.pictures.algebras.validation.ImageValidationAlgebra
+import com.github.jmarin.photodb.backend.domain.pictures.interpreters.repositories.inmemory.ImageRepositoryInMemoryInterpreter
+import com.github.jmarin.photodb.backend.domain.pictures.interpreters.validation.ImageValidationInterpreter
 import javax.imageio.ImageIO
 
 class ImageServiceSpec extends WordSpec with Matchers {

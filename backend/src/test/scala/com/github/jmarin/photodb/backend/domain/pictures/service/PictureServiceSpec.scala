@@ -5,8 +5,9 @@ import java.util.UUID
 import cats.Id
 import org.scalatest.{Matchers, WordSpec}
 import com.github.jmarin.photodb.backend.domain.pictures.model._
-import com.github.jmarin.photodb.backend.domain.pictures.interpreters.PictureRepositoryInMemoryInterpreter
-import com.github.jmarin.photodb.backend.domain.pictures.interpreters.PictureValidationInterpreter
+import com.github.jmarin.photodb.backend.domain.pictures.interpreters.repositories.inmemory.PictureRepositoryInMemoryInterpreter
+import com.github.jmarin.photodb.backend.domain.pictures.interpreters.validation.PictureValidationInterpreter
+
 import scala.collection.immutable
 
 class PictureServiceSpec extends WordSpec with Matchers {

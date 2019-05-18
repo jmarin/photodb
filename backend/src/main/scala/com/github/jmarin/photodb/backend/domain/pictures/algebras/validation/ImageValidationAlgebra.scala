@@ -1,4 +1,4 @@
-package com.github.jmarin.photodb.backend.domain.pictures.algebras
+package com.github.jmarin.photodb.backend.domain.pictures.algebras.validation
 
 import cats.data.EitherT
 import com.github.jmarin.photodb.backend.domain.pictures.model.ImageAlreadyExistsError

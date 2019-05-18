@@ -1,10 +1,11 @@
-package com.github.jmarin.backend.domain.pictures.interpreters
+package com.github.jmarin.photodb.backend.domain.pictures.interpreters.repositories.inmemory
 
 import cats.Applicative
-import com.github.jmarin.photodb.backend.domain.pictures.algebras.ImageRepositoryAlgebra
 import cats.data.OptionT
-import scala.collection.concurrent.TrieMap
 import cats.implicits._
+import com.github.jmarin.photodb.backend.domain.pictures.algebras.repositories.ImageRepositoryAlgebra
+
+import scala.collection.concurrent.TrieMap
 
 class ImageRepositoryInMemoryInterpreter[F[_]: Applicative] extends ImageRepositoryAlgebra[F] {
 

@@ -1,15 +1,14 @@
-package com.github.jmarin.photodb.backend.domain.pictures.interpreters
+package com.github.jmarin.photodb.backend.domain.pictures.interpreters.validation
 
-import org.scalatest.Matchers
-import org.scalatest.PropSpec
-import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import java.awt.image.BufferedImage
-import com.github.jmarin.backend.domain.pictures.interpreters.ImageRepositoryInMemoryInterpreter
-import com.github.jmarin.photodb.backend.domain.pictures.model.ImageAlreadyExistsError
-import cats.Id
 import java.io.ByteArrayOutputStream
+
+import cats.Id
+import com.github.jmarin.photodb.backend.domain.pictures.interpreters.repositories.inmemory.ImageRepositoryInMemoryInterpreter
+import com.github.jmarin.photodb.backend.domain.pictures.model.{ImageAlreadyExistsError, ImageArbitraries}
 import javax.imageio.ImageIO
-import com.github.jmarin.photodb.backend.domain.pictures.model.ImageArbitraries
+import org.scalatest.{Matchers, PropSpec}
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 
 class ImageValidationInterpreterSpec
     extends PropSpec

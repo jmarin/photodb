@@ -5,16 +5,9 @@ import java.util.UUID
 import cats.Monad
 import cats.data.{EitherT, OptionT}
 import cats.implicits._
-import com.github.jmarin.photodb.backend.domain.pictures.algebras.{
-  PictureRepositoryAlgebra,
-  PictureValidationAlgebra
-}
-import com.github.jmarin.photodb.backend.domain.pictures.model.{
-  Keyword,
-  Picture,
-  PictureAlreadyExistsError,
-  PictureNotFoundError
-}
+import com.github.jmarin.photodb.backend.domain.pictures.algebras.repositories.PictureRepositoryAlgebra
+import com.github.jmarin.photodb.backend.domain.pictures.algebras.validation.PictureValidationAlgebra
+import com.github.jmarin.photodb.backend.domain.pictures.model.{Keyword, Picture, PictureAlreadyExistsError, PictureNotFoundError}
 
 class PictureService[F[_]: Monad](
     repository: PictureRepositoryAlgebra[F],
