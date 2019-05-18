@@ -2,7 +2,6 @@ package com.github.jmarin.photodb.backend.domain.pictures.service
 import com.github.jmarin.photodb.backend.domain.pictures.algebras.ImageRepositoryAlgebra
 import com.github.jmarin.photodb.backend.domain.pictures.algebras.ImageValidationAlgebra
 import cats.Monad
-import java.awt.image.BufferedImage
 import cats.data.{EitherT, OptionT}
 import com.github.jmarin.photodb.backend.domain.pictures.model.ImageAlreadyExistsError
 import com.github.jmarin.photodb.backend.domain.pictures.model.ImageNotFoundError
@@ -14,15 +13,15 @@ class ImageService[F[_]: Monad](
 
   def createImage(
       path: String,
-      image: BufferedImage
-  ): EitherT[F, ImageAlreadyExistsError, BufferedImage] = {
+      image: Array[Byte]
+  ): EitherT[F, ImageAlreadyExistsError, Array[Byte]] = {
     for {
       _     <- imageValidation.doesNotExist(path)
       saved <- EitherT.liftF(imageRepository.create(path, image))
     } yield saved
   }
 
-  def get(path: String): EitherT[F, ImageNotFoundError.type, BufferedImage] =
+  def get(path: String): EitherT[F, ImageNotFoundError.type, Array[Byte]] =
     imageRepository.get(path).toRight(ImageNotFoundError)
 
   def delete(path: String): OptionT[F, String] =

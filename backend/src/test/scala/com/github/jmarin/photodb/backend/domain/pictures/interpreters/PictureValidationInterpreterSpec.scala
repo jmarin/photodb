@@ -19,27 +19,27 @@ class PictureValidationInterpreterSpec
   val pictureRepository = PictureRepositoryInMemoryInterpreter.apply[Id]
   val pictureValidation = PictureValidationInterpreter.apply[Id](pictureRepository)
 
-  property("exists: fails if image is not in repository") {
+  property("exists: fails if picture is not in repository") {
     forAll { picture: Picture =>
       pictureValidation.exists(picture.id.some).value shouldBe Left(PictureNotFoundError)
       pictureValidation.exists(None).value shouldBe Left(PictureNotFoundError)
     }
   }
 
-  property("exists: passes if image is already in repository") {
+  property("exists: passes if picture is already in repository") {
     forAll { picture: Picture =>
       pictureRepository.create(picture) shouldEqual picture
       pictureValidation.exists(picture.id.some).value shouldBe Right(())
     }
   }
 
-  property("doesNotExist: passes if image is not in repository") {
+  property("doesNotExist: passes if picture is not in repository") {
     forAll { picture: Picture =>
       pictureValidation.doesNotExist(picture).value shouldBe Right(())
     }
   }
 
-  property("doesNotExist: fails if image is already in repository") {
+  property("doesNotExist: fails if picture is already in repository") {
     forAll { picture: Picture =>
       pictureRepository.create(picture) shouldEqual picture
       pictureValidation.doesNotExist(picture).value shouldBe Left(
