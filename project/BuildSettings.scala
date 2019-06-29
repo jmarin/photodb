@@ -4,7 +4,7 @@ import sbt._
 object BuildSettings {
   val buildOrganization = "com.jmarin"
   val buildVersion = "1.0-SNAPSHOT"
-  val buildScalaVersion = "2.12.8"
+  val buildScalaVersion = "2.13.0"
 
   val commonSettings = Defaults.coreDefaultSettings ++
     Seq(
@@ -16,7 +16,6 @@ object BuildSettings {
         "-deprecation",
         "-unchecked",
         "-feature",
-        "-Ypartial-unification",
         "-language:higherKinds"
       ),
       parallelExecution in Test := true,

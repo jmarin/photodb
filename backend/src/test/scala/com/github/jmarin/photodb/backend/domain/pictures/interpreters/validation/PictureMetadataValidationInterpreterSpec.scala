@@ -3,7 +3,7 @@ package com.github.jmarin.photodb.backend.domain.pictures.interpreters.validatio
 import cats.Id
 import cats.implicits._
 import com.github.jmarin.photodb.backend.domain.pictures.interpreters.repositories.inmemory.PictureMetadataRepositoryInMemoryInterpreter
-import com.github.jmarin.photodb.backend.domain.pictures.model.{PictureMetadata, PictureMetadataAlreadyExistsError, PictureMetadataArbitraries, PictureMetadataNotFoundError$}
+import com.github.jmarin.photodb.backend.domain.pictures.model.{PictureMetadata, PictureMetadataAlreadyExistsError, PictureMetadataArbitraries, PictureMetadataNotFoundError}
 import org.scalatest.{Matchers, PropSpec}
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 
@@ -18,8 +18,8 @@ class PictureMetadataValidationInterpreterSpec
 
   property("exists: fails if picture is not in repository") {
     forAll { picture: PictureMetadata =>
-      pictureValidation.exists(picture.id.some).value shouldBe Left(PictureMetadataNotFoundError$)
-      pictureValidation.exists(None).value shouldBe Left(PictureMetadataNotFoundError$)
+      pictureValidation.exists(picture.id.some).value shouldBe Left(PictureMetadataNotFoundError)
+      pictureValidation.exists(None).value shouldBe Left(PictureMetadataNotFoundError)
     }
   }
 

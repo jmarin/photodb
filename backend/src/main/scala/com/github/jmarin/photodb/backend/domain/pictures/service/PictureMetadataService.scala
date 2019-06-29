@@ -7,7 +7,7 @@ import cats.data.{EitherT, OptionT}
 import cats.implicits._
 import com.github.jmarin.photodb.backend.domain.pictures.algebras.repositories.PictureMetadataRepositoryAlgebra
 import com.github.jmarin.photodb.backend.domain.pictures.algebras.validation.PictureMetadataValidationAlgebra
-import com.github.jmarin.photodb.backend.domain.pictures.model.{Keyword, PictureMetadata, PictureMetadataAlreadyExistsError, PictureMetadataNotFoundError$}
+import com.github.jmarin.photodb.backend.domain.pictures.model.{Keyword, PictureMetadata, PictureMetadataAlreadyExistsError, PictureMetadataNotFoundError}
 
 class PictureMetadataService[F[_]: Monad](
                                    repository: PictureMetadataRepositoryAlgebra[F],
@@ -20,14 +20,14 @@ class PictureMetadataService[F[_]: Monad](
       saved <- EitherT.liftF(repository.create(picture))
     } yield saved
 
-  def updatePicture(picture: PictureMetadata): EitherT[F, PictureMetadataNotFoundError$.type, PictureMetadata] =
+  def updatePicture(picture: PictureMetadata): EitherT[F, PictureMetadataNotFoundError.type, PictureMetadata] =
     for {
       _       <- validation.exists(picture.id.some)
-      updated <- EitherT.fromOptionF(repository.update(picture).value, PictureMetadataNotFoundError$)
+      updated <- EitherT.fromOptionF(repository.update(picture).value, PictureMetadataNotFoundError)
     } yield updated
 
-  def getPicture(pictureId: UUID): EitherT[F, PictureMetadataNotFoundError$.type, PictureMetadata] =
-    repository.get(pictureId).toRight(PictureMetadataNotFoundError$)
+  def getPicture(pictureId: UUID): EitherT[F, PictureMetadataNotFoundError.type, PictureMetadata] =
+    repository.get(pictureId).toRight(PictureMetadataNotFoundError)
 
   def deletePicture(pictureId: UUID): OptionT[F, UUID] =
     repository.delete(pictureId).map(p => p.id)

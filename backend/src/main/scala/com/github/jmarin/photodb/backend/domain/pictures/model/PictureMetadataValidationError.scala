@@ -4,4 +4,4 @@ import java.util.UUID
 
 sealed trait PictureMetadataValidationError              extends Product with Serializable
 case class PictureMetadataAlreadyExistsError(uuid: UUID) extends PictureMetadataValidationError
-case object PictureMetadataNotFoundError$                 extends PictureMetadataValidationError
+case object PictureMetadataNotFoundError                 extends PictureMetadataValidationError

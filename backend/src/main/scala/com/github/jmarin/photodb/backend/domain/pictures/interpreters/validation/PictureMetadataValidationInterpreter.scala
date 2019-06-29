@@ -7,7 +7,7 @@ import cats.data.EitherT
 import cats.implicits._
 import com.github.jmarin.photodb.backend.domain.pictures.algebras.repositories.PictureMetadataRepositoryAlgebra
 import com.github.jmarin.photodb.backend.domain.pictures.algebras.validation.PictureMetadataValidationAlgebra
-import com.github.jmarin.photodb.backend.domain.pictures.model.{PictureMetadata, PictureMetadataAlreadyExistsError, PictureMetadataNotFoundError$}
+import com.github.jmarin.photodb.backend.domain.pictures.model.{PictureMetadata, PictureMetadataAlreadyExistsError, PictureMetadataNotFoundError}
 
 class PictureMetadataValidationInterpreter[F[_]: Monad](pictureRepository: PictureMetadataRepositoryAlgebra[F])
     extends PictureMetadataValidationAlgebra[F] {
@@ -23,15 +23,15 @@ class PictureMetadataValidationInterpreter[F[_]: Monad](pictureRepository: Pictu
       }
     }
 
-  override def exists(pictureId: Option[UUID]): EitherT[F, PictureMetadataNotFoundError$.type, Unit] =
+  override def exists(pictureId: Option[UUID]): EitherT[F, PictureMetadataNotFoundError.type, Unit] =
     EitherT {
       pictureId match {
         case Some(id) =>
           pictureRepository.get(id).value.map {
             case Some(_) => Right(())
-            case None    => Left(PictureMetadataNotFoundError$)
+            case None    => Left(PictureMetadataNotFoundError)
           }
-        case None => Either.left[PictureMetadataNotFoundError$.type, Unit](PictureMetadataNotFoundError$).pure[F]
+        case None => Either.left[PictureMetadataNotFoundError.type, Unit](PictureMetadataNotFoundError).pure[F]
       }
     }
 

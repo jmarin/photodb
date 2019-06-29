@@ -36,7 +36,7 @@ class PictureMetadataServiceSpec extends WordSpec with Matchers {
 
   "Picture Service" should {
     "create picture" in {
-      pictureService.getPicture(pic1.id).value shouldEqual Left(PictureMetadataNotFoundError$)
+      pictureService.getPicture(pic1.id).value shouldEqual Left(PictureMetadataNotFoundError)
       pictureService.createPicture(pic1).value shouldEqual Right(pic1)
       pictureService.createPicture(pic2).value shouldEqual Right(pic2)
       pictureService.createPicture(pic3).value shouldEqual Right(pic3)
@@ -71,11 +71,11 @@ class PictureMetadataServiceSpec extends WordSpec with Matchers {
     }
     "delete picture" in {
       pictureService.deletePicture(pic1.id).value shouldEqual Some(pic1.id)
-      pictureService.getPicture(pic1.id).value shouldEqual Left(PictureMetadataNotFoundError$)
+      pictureService.getPicture(pic1.id).value shouldEqual Left(PictureMetadataNotFoundError)
       pictureService.deletePicture(pic2.id).value shouldEqual Some(pic2.id)
-      pictureService.getPicture(pic2.id).value shouldEqual Left(PictureMetadataNotFoundError$)
+      pictureService.getPicture(pic2.id).value shouldEqual Left(PictureMetadataNotFoundError)
       pictureService.deletePicture(pic3.id).value shouldEqual Some(pic3.id)
-      pictureService.getPicture(pic3.id).value shouldEqual Left(PictureMetadataNotFoundError$)
+      pictureService.getPicture(pic3.id).value shouldEqual Left(PictureMetadataNotFoundError)
     }
 
   }
